@@ -5,11 +5,11 @@ namespace StringInterpolation.Static.Provider
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInterpolationStaticProvider(this IServiceCollection services)
-        {
-            //services.AddTransient<IInterpolationProvider, StaticProvider>();
+        //public static IServiceCollection AddInterpolationStaticProvider(this IServiceCollection services)
+        //{
+        //    //services.AddTransient<IInterpolationProvider, StaticProvider>();
 
-            return services;
-        }
+        //    return services;
+        //}
     }
 }
