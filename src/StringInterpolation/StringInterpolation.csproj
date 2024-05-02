@@ -3,6 +3,13 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<IsPackable>true</IsPackable>
+		<Title>String Interpolation</Title>
+		<Description>Package responsavel por fazer replace no responseBody a partir de um provider informado.</Description>
+		<Authors>Gustavo Maritan</Authors>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Version>1.1.0</Version>
+		<PackageOutputPath>../../packages</PackageOutputPath>
 	</PropertyGroup>
 
 	<ItemGroup>
