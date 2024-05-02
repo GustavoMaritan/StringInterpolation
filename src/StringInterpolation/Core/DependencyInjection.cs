@@ -4,6 +4,8 @@ using System.Collections.Concurrent;
 using StringInterpolation.Core.Domain;
 using StringInterpolation.Core.Abstract;
 using StringInterpolation.Core.Services;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Http;
 
 namespace StringInterpolation.Core
 {
@@ -56,6 +58,26 @@ namespace StringInterpolation.Core
              );
 
             StorageValues.Load(lazyResult);
+        }
+
+        public static IApplicationBuilder UseInterpolationReload(this IApplicationBuilder app)
+        {
+            var provider = app.ApplicationServices.GetRequiredService<IInterpolationProvider>();
+
+            app.UseRouter(router =>
+            {
+                router.MapGet("/string-interpolation/reload", async context =>
+                {
+                    var keyValuePairs = await provider.LoadAsync();
+                    StorageValues.Load(keyValuePairs);
+
+                    var result = new { success = true, data = keyValuePairs };
+                    context.Response.ContentType = "application/json";
+                    await context.Response.WriteAsJsonAsync(result);
+                });
+            });
+
+            return app;
         }
     }
 }
