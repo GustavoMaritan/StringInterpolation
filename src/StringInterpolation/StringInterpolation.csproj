@@ -4,12 +4,19 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<IsPackable>true</IsPackable>
-		<Title>String Interpolation</Title>
-		<Description>Package responsavel por fazer replace no responseBody a partir de um provider informado.</Description>
+		<Title>StringInterpolation</Title>
+		<Description>
+			- Disponibiliza métodos para fazer replace em String/Objetos, a partir de um Dicionario(chave, valor)
+				- Service para utilização manual
+				- Attribute, Filter e Middleware para interceptar o responseBody e aplicar o replace.
+		</Description>
 		<Authors>Gustavo Maritan</Authors>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Version>1.1.0</Version>
 		<PackageOutputPath>../../packages</PackageOutputPath>
+		<PackageProjectUrl></PackageProjectUrl>
+		<PackageId>GM.StringInterpolation</PackageId>
+		<RepositoryUrl>https://github.com/GustavoMaritan/StringInterpolation</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
