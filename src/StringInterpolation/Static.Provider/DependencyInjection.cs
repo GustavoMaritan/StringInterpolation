@@ -7,7 +7,7 @@ namespace StringInterpolation.Static.Provider
     {
         public static IServiceCollection AddInterpolationStaticProvider(this IServiceCollection services)
         {
-            services.AddTransient<IInterpolationProvider, StaticProvider>();
+            //services.AddTransient<IInterpolationProvider, StaticProvider>();
 
             return services;
         }
