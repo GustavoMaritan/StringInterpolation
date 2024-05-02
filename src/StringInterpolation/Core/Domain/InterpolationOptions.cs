@@ -26,7 +26,12 @@ namespace StringInterpolation.Core.Domain
         {
             InterpolationConfig.KeyName = keyName;
             InterpolationConfig.SearchKey = searchKey;
+            return this;
+        }
 
+        public InterpolationOptions SetPattern(string pattern)
+        {
+            InterpolationConfig.SetPattern(pattern);
             return this;
         }
     }

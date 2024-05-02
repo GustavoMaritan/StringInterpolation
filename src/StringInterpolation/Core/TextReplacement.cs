@@ -6,17 +6,19 @@ namespace StringInterpolation.Core
 {
     internal static class TextReplacement
     {
-        public static string WithSpan(InputText responseBody, Dictionary<string, string> replacements)
+        public static string WithSpan(InputText responseBody, Dictionary<string, string> replacements, string pattern = null)
         {
-            var result = WithSpanToChar(responseBody, replacements);
+            var result = WithSpanToChar(responseBody, replacements, pattern);
             return new string(result, 0, result.Length);
         }
 
-        public static char[] WithSpanToChar(InputText responseBody, Dictionary<string, string> replacements)
+        public static char[] WithSpanToChar(InputText responseBody, Dictionary<string, string> replacements, string pattern = null)
         {
             ReadOnlySpan<char> original = responseBody.ToString();
-            var keyPositions = KeyPositions(original, replacements);
 
+            var keyPattern = InterpolationConfig.KeyPattern(pattern);
+
+            var keyPositions = KeyPositions(original, replacements, keyPattern);
             if (keyPositions.Count <= 0)
             {
                 return original.ToArray();
@@ -31,12 +33,13 @@ namespace StringInterpolation.Core
 
         private static Dictionary<string, FormatValue> KeyPositions(
             ReadOnlySpan<char> original,
-            Dictionary<string, string> replacements)
+            Dictionary<string, string> replacements,
+            InterpolationPattern keyPattern)
         {
             var keyPositions = new Dictionary<string, FormatValue>();
             foreach (var replacement in replacements.Keys)
             {
-                FindAllOccurrences(original, replacement, keyPositions);
+                FindAllOccurrences(original, replacement, keyPositions, keyPattern);
             }
 
             return keyPositions;
@@ -45,9 +48,11 @@ namespace StringInterpolation.Core
         private static void FindAllOccurrences(
             ReadOnlySpan<char> span,
             string search,
-            Dictionary<string, FormatValue> occurrences)
+            Dictionary<string, FormatValue> occurrences,
+            InterpolationPattern keyPattern)
         {
-            var regex = @"({{2})(" + search + ")(([ ]{1,})-[a-zA-Z0-9]{1,})?(}{2})";
+            //@"({{2})(" + search + ")(([ ]{1,})-[a-zA-Z0-9]{1,})?(}{2})";
+            var regex = keyPattern.Regex(search);
 
             var matches = Regex.Matches(span.ToString(), regex);
             foreach (var item in matches.Cast<Match>())

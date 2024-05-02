@@ -10,7 +10,7 @@ namespace ApiTests.Controllers
     {
         private static readonly string[] Summaries = new[]
         {
-            "Freezing", "{{chave1}}", "Chilly", "Cool", "Mild", "Warm", "{{chave2}}", "Hot", "Sweltering", "{{chave -u}}"
+            "Freezing", "{{chave1}}", "Chilly", "Cool", "[[ chave2 ]]", "Warm", "{{chave2}}", "Hot", "Sweltering", "{{chave -u}}"
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
@@ -43,6 +43,17 @@ namespace ApiTests.Controllers
            [FromQuery] string nome3 = "gustavo ddddedd",
            [FromRoute] string id = "gm",
            [FromRoute] string teste = "valor para teste"
+        )
+        {
+            return Ok(Summaries);
+        }
+
+
+        [HttpGet("pattern")]
+        [EnableTextReplacement(null, "[[  ]]")]
+        public IActionResult GetPattern(
+           [FromHeader] string partner = "item1",
+           [FromQuery] string nome = "gustavo"
         )
         {
             return Ok(Summaries);

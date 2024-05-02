@@ -64,15 +64,18 @@ namespace StringReplacement.UnitTests
         public void ReplaceString_Without_Dictionary()
         {
             StorageValues.Load(new ConcurrentDictionary<string, Dictionary<string, string>>());
-            var result = _service.ReplaceString("Bem vindo à {{name}}", "whg");
-            Assert.Equal("Bem vindo à {{name}}", result);
+
+            var result = _service.ReplaceString("Bem vindo à {{ name }}", "whg");
+            Assert.Equal("Bem vindo à {{ name }}", result);
         }
 
         [Fact]
         public void ReplaceString_Without_Keys()
         {
             StorageValues.Load(_dictionary ?? new());
+
             var result = _service.ReplaceString("Bem vindo à XP", "whg");
+
             Assert.Equal($"Bem vindo à XP", result);
         }
 
@@ -89,7 +92,7 @@ namespace StringReplacement.UnitTests
         [InlineData("Whg")]
         public void ReplaceString_With_Object(string name)
         {
-            var result = _service.ReplaceString("Bem vindo à {{name}}", new { name });
+            var result = _service.ReplaceString("Bem vindo à {{ name }}", new { name }, "{{  }}");
             Assert.Equal($"Bem vindo à {name}", result);
         }
 
@@ -101,12 +104,28 @@ namespace StringReplacement.UnitTests
         {
             StorageValues.Load(_dictionary2);
 
-            var result = _service.ReplaceString("{{name}} Bem vindo à", keyName);
+            var result = _service.ReplaceString("[[name]] Bem vindo à", keyName, "[[]]");
 
             if (keyName.Equals("xp") || keyName.Equals("taler"))
                 Assert.Equal($"XPInc Bem vindo à", result);
             else
                 Assert.Equal("Whg Bem vindo à", result);
+        }
+
+        [Theory]
+        [InlineData("xp")]
+        [InlineData("WHG")]
+        [InlineData("taler")]
+        public void ReplaceString_With_Provider_Keys22(string keyName)
+        {
+            StorageValues.Load(_dictionary2);
+
+            var result = _service.ReplaceString("[[ name -l ]] Bem vindo à", keyName, "[[  ]]");
+
+            if (keyName.Equals("xp") || keyName.Equals("taler"))
+                Assert.Equal($"xpinc Bem vindo à", result);
+            else
+                Assert.Equal("whg Bem vindo à", result);
         }
 
         [Fact]

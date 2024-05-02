@@ -12,25 +12,32 @@ namespace StringReplacement.AspNetCore
     {
         private readonly SearchKey _searchKey = SearchKey.Null;
         private readonly string _keyName = null;
+        private readonly string _keyPattern = null;
 
         public EnableTextReplacementAttribute() { }
 
-        public EnableTextReplacementAttribute(SearchKey searchKey, string keyName)
+        public EnableTextReplacementAttribute(
+            SearchKey searchKey = SearchKey.Null, 
+            string keyName = null, 
+            string keyPattern = null
+        )
         {
             _searchKey = searchKey;
             _keyName = keyName;
+            _keyPattern = keyPattern;
         }
 
-        public EnableTextReplacementAttribute(string keyName)
+        public EnableTextReplacementAttribute(string keyName = null, string keyPattern = null)
         {
             _keyName = keyName;
+            _keyPattern = keyPattern;
         }
 
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var key = GetKey(context);
 
-            using var textStream = new TextReplacementStream(context.HttpContext.Response.Body, key);
+            using var textStream = new TextReplacementStream(context.HttpContext.Response.Body, key, _keyPattern);
             context.HttpContext.Response.Body = textStream;
 
             await next();

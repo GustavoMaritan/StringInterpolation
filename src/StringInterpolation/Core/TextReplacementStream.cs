@@ -8,11 +8,13 @@ namespace StringInterpolation.Core
     {
         private readonly Stream _responseStream;
         private readonly string _key;
+        private readonly string _keyPattern;
 
-        public TextReplacementStream(Stream responseStream, string key)
+        public TextReplacementStream(Stream responseStream, string key, string keyPattern = null)
         {
             _responseStream = responseStream;
             _key = key;
+            _keyPattern = keyPattern;
         }
 
         public override void Write(byte[] buffer, int offset, int count)
@@ -21,7 +23,7 @@ namespace StringInterpolation.Core
 
             var keys = StorageValues.GetValue(_key);
 
-            var result = TextReplacement.WithSpanToChar(responseBody, keys);
+            var result = TextReplacement.WithSpanToChar(responseBody, keys, _keyPattern);
 
             var resultBuffer = Encoding.UTF8.GetBytes(result);
 

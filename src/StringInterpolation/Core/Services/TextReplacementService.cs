@@ -8,28 +8,28 @@ namespace StringInterpolation.Core.Services
 {
     public class TextReplacementService : ITextReplacementService
     {
-        public string ReplaceString(InputText toReplace, object parameters)
+        public string ReplaceString(InputText toReplace, object parameters, string pattern = null)
         {
             var dic = ToDictionary(parameters);
 
-            return TextReplacement.WithSpan(toReplace, dic);
+            return TextReplacement.WithSpan(toReplace, dic, pattern);
         }
 
-        public string ReplaceString(InputText toReplace, string keyName)
+        public string ReplaceString(InputText toReplace, string keyName, string pattern = null)
         {
             var keys = StorageValues.GetValue(keyName);
 
-            return TextReplacement.WithSpan(toReplace, keys);
+            return TextReplacement.WithSpan(toReplace, keys, pattern);
         }
 
-        public string ReplaceString(InputText toReplace, string keyName, object parameters)
+        public string ReplaceString(InputText toReplace, string keyName, object parameters, string pattern = null)
         {
             var dic = ToDictionary(parameters);
 
-            return ReplaceString(toReplace, keyName, dic);
+            return ReplaceString(toReplace, keyName, dic, pattern);
         }
 
-        public string ReplaceString(InputText toReplace, string keyName, Dictionary<string, string> parameters)
+        public string ReplaceString(InputText toReplace, string keyName, Dictionary<string, string> parameters, string pattern = null)
         {
             if (!string.IsNullOrEmpty(keyName))
             {
@@ -44,7 +44,7 @@ namespace StringInterpolation.Core.Services
                 }
             }
 
-            return TextReplacement.WithSpan(toReplace, parameters);
+            return TextReplacement.WithSpan(toReplace, parameters, pattern);
 
         }
 
