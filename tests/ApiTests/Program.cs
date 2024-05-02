@@ -15,6 +15,7 @@ services
     {
         x.SetProvider<MeuProvider>();
         x.SetSearchKey(SearchKey.Query, "nome");
+        //x.SetPattern("[[  ]]");
     })
     .AddInterpolationService();
 
