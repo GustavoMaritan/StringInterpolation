@@ -54,7 +54,7 @@ namespace StringInterpolation.Core
             {
                 if (!occurrences.TryGetValue(item.Value, out FormatValue value))
                 {
-                    var option = item.Groups[3].Value.Trim().Replace("-", "");
+                    var option = item.Groups[3].Value.Trim();
                     occurrences.Add(item.Value, FormatValue.GetInstance(option, search));
                     continue;
 
@@ -126,54 +126,6 @@ namespace StringInterpolation.Core
             }
 
             return resultArray;
-        }
-    }
-
-    public class FormatValue
-    {
-        public string Search { get; set; }
-        public int Count { get; set; } = 1;
-
-        public virtual string GetValue(Dictionary<string, string> replacements)
-        {
-            return replacements[Search];
-        }
-
-        public static FormatValue GetInstance(string option, string search)
-        {
-            return option switch
-            {
-                "lower" or "l" => new FormatToLower { Search = search },
-                "upper" or "u" => new FormatToUpper { Search = search },
-                "password" or "pw" => new FormatToPassword { Search = search },
-                _ => new FormatValue { Search = search },
-            };
-        }
-    }
-
-    public class FormatToLower : FormatValue
-    {
-        public override string GetValue(Dictionary<string, string> replacements)
-        {
-            return replacements[Search].ToLower();
-        }
-    }
-
-    public class FormatToUpper : FormatValue
-    {
-        public override string GetValue(Dictionary<string, string> replacements)
-        {
-            return replacements[Search].ToUpper();
-        }
-    }
-
-    public class FormatToPassword : FormatValue
-    {
-        public override string GetValue(Dictionary<string, string> replacements)
-        {
-            var length = replacements[Search].Length;
-
-            return "".PadLeft(length, '*');
         }
     }
 }
